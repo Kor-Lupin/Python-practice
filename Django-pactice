@@ -1,0 +1,169 @@
+1. 웹사이트 띄우기
+  1-1. cmd를 이용해 웹사이트를 만들 가상환경 생성 
+            --> python -m venve myenironment<가상환경 이름>
+  
+  1-2. myenvironment 파일 하위에 있는 Scripts로 이동
+            --> C:\python-kdy\django\myenvironment\Scipts
+            --> 가상환경 실행 --> activate.bat
+            
+  1-3. 서버를 구동할 프로젝트 생성
+            --> myenvironment 가상환경 내에서 C:\python_kdy\django 파일로 이동 후
+            --> django-admin startproject myproject 명령 시행 ( myproject라는 프로젝트 생성)
+            
+  1-4. 서버 구동
+            --> C:\python_kdy\django\myproject --> manage.py 파일 있는 곳에서 실행
+            --> python manage.py runserver ( 기본 8000번 포트로 서버 구동)
+            --> (원하는 포트번호로 바꿀시) python manage.py runserver <포트번호> 
+            
+  1-5. 서버 종료
+            --> CTRL + C
+            
+  1-6. 서버 구동 확인
+            --> 인터넷 사이에서 주소창에 127.0.0.1:8000 입력
+            
+            
+            
+            
+* 구동된 서버는
+장고 개발 테스트 서버로써 경량의 웹 서버이다.
+주로 개발 목적 및 테스트 용도로 사용이 되는 서버이기에.
+실무로 쓰기 위해서는 엔진엑스 or 아파치 같은 웹서버를 사용해야한다.
+
+------------------------------------------------------------------------
+
+프로젝트 생성 후 생성되는 폴더 및 파일들 --> C:\python_kdy\django > 하위에 생성
+              myenvironment
+              myproject
+                    manage.py (가장 자주 사용하는 파일 중 하나. 서버 구동 등에 쓰인다.)
+                    myproejct 
+                          - settings ( 프로젝트 내 환경구성 등 여러 설정 정보를 담고 있음.)
+                          - urls.py ( URL 패턴 등 패스 관련 여러 정보를 담고있음 )
+                           ( 일단 위 2개가 중요한 파일 --> 자주 사용되는 파일 이다.)
+                           
+-------------------------------------------------------------------------
+
+2. superuser (수퍼유저) 생성 및 기본 테이블 생성 --> superuser (즉, 관리자) 
+     2-1. superuser 생성
+              --> C:\python_kdy\django\myproject 에서 
+              --> python manage.py migrate ( 기본 테이블 생성 --> 생성이 안되어 있으면 superuser 생성이 안된다.)
+              --> python manage.py createsuperuser 
+              
+     2-2. 관리자 모드 접속
+              --> localhost:8000/admin 으로 접속
+              --> 아이디, 비번 입력후 접속 하면 끝
+            
+--------------------------------------------------------------------------
+
+3. django 학습을 위한 주요 개념들
+     3-1. Framework (프레임워크)
+              --> django는 파이썬으로 개발된 오픈 소스 웹 프레임워크.
+              --> 기본적으로 'M(모델) - V(뷰) - C(컨트롤러)'  패턴을 따른다.
+                      V (뷰) : 사용자에게 보여지는 페이지 라고 생각하면 된다.
+                      C (컨트롤러) : 사용자의 요청에 따른, 적절한 V을 보여지게 해주는 역할
+              --> 간단히 말해 M,V,C는 각각의 영역을 침범하지 않는 패턴이 있다.
+        
+        * Framework 장점
+              --> 초보자라도 품질(Quality)좋은 웹사이트를 만들 수 있다.
+              --> 유지보수 등을 위한 직원 및 개발팀의 충원이나 연속성이 비프레임워크에 비해서 상대적으로 보장된다.
+        * Framework 단점
+              --> 배우는 것이 어렵다.
+              --> 규칙과 가이드에서 벗어나는 것을 대부분의 프레임워크가 허용하지 않는다.
+              --> 모던한 개발방식이기에 기존의 전통적인 방식으로 개발된 웹사이트와 통합하기가 쉽지 않다. 새롭게 만드는 것이 더 효율.
+
+     3-2. 가상환경
+              --> 웹 개발 프로젝트를 진행할 때 독립된 환경을 구축해준다.
+              --> 웹 개발 프로젝트 성격에 따라 프로젝트 마다 프로젝트에 사용되는 라이브러릴나 관련 버전들이 다를 수 있다.
+              --> 가상환경 구축 툴이 여러 개 있는데 파이썬 내 모듈인 'venv' 모듈을 사용하여 아래처럼 구축한다,
+                  --> python -m venv <가상환경이름>
+                  --> (다른 방법) pip install vitualenv (가상 디렉토리 생성)
+                                -> vitualenv mywebsite
+                    
+     3-3. Project와 App
+              --> 기본적으로 프로젝트는 가장 큰 또는 최상위의 웹 개발 디렉토리(폴더)라고 생각하면 된다.
+              --> 이 안에 여러개의 프로그램을 만들어 넣을 수 있는데 이를 'App(앱)'이라 부른다.
+              --> 이런 여러 개의 앱들이 모여서 하나의 프로젝트가 되고 이는 곧 하나의 웹사이트가 된다.
+              
+              --> django 에서 프로젝트 생성 -> django-admin startproject <프로젝트명>
+                              앱 생성 -> python manage.py startapp <앱명>
+                              
+     3-4. Model
+              --> 모델은 곧 데이터(데이터베이스)
+              --> 장고는 모델(Model)을 이용하여 데이터 및 데이터베이스 연동 작업을 처리한다고 생각.
+              
+              
+-------------------------------------------------------------------------------
+
+4. App 생성하기
+    4-1. Project vs App 차이
+              --> project 는 큰 개념이고 app은 그 하위의 작은개념.
+              --> 큰 프로젝트 안에서 필요한 프로그램들의 단위가 앱으로써 회원가입, 게시판, 설문조사 등의 앱이 있을 수 있음.
+              --> 즉, 앱을 프로젝트 내에서 특정한 기능을 수행하는 프로그램 단위.
+              
+    4-2. 앱 생성 명령어
+              --> 가상모드로 진입
+              --> C:\python_kdy\django\myproject > py manage.py startapp onememos
+    
+    4-3. onememos 폴더 생성 및 파일들
+              --> migrations(폴더)
+              --> admin.py
+              --> views.py
+              --> models.py
+                    등등.. 폴더나 파일들이 자동으로 생성
+              --> urls.py (별도로 수동 생성해줘야 하는 파일. 최상위 URLconf 와의 연결을 위하여 필요. 최상위 urls.py 파일에 있음)
+                    --> copy con urls.py      
+    4-4. 최상위 urls.py --> ulpatterns --> 앱패스 추가
+              --> path('onememos/', include('onememos.urls')),  # include 임포트 했는지 확인!!! 안하면 서버 구동 시 에러!!! 
+              --> path('admin/', admin.site.urls),
+                           
+    4-5. include()함수
+              --> 다른 URLconf 패스들을 참조할 수 있도록 해주는 함수. 앱 구동 및 연결 시 중요한 역할을 하는 함수.
+              
+-----------------------------------------------------------------------------------
+
+5. hellow World 출력 ( 텍스트 에디터 이용)
+    5-1. views.py파일 실행
+             --> from django.shortcuts import render
+                 from django.http import HttpResponse
+
+                 def index(request):
+                 return HttpResponse('Hello World!!')
+                 
+    5-2. urls.py 
+             --> from django.urls import path
+                 from . import views
+                 
+                 urlpatterns = [
+                      path('', views.index, name = 'index')    # path('', -> 이렇게 입력해도 urls.py가 onememos안에 있는 파일이기에
+                 ]                                                           주소창에 localhost:8000/onememos/ 로 입력한 거랑 똑같다.
+                                                               # views.index --> views파일 안에있는 index 모듈을 참고하겠다.
+    
+    5-3. 프로젝트 파일의 urls.py
+            --> myproject의 urls.py을 연다.
+            --> from django.contrib import admin
+                from django.urls import path, include
+
+                urlpatterns = [
+                         path('onememos/', include('onememos.urls')),
+                         path('admin/', admin.site.urls),
+                ]
+
+----------------------------------------------------------------------
+
+6. 테이블 생성하기 ( 위의 py manage.py migrate 로 생성된 기본 테이블이 아닌 별도로 생성)
+            --> python manage.py migrate --> 실행 --> 프로젝트 생성 시 필요한 기본적인 테이블, 앱들 설치.
+                이렇게 설치된 앱 들은 어디? --> 환경설정 폴더(myproject or config)/settings.py
+                
+            
+
+                           
+                           
+                           
+                           
+                           
+                           
+                           
+                           
+                           
+                           
+                           
+                           
