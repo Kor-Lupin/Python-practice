@@ -1,24 +1,24 @@
 1. 웹사이트 띄우기
-  1-1. cmd를 이용해 웹사이트를 만들 가상환경 생성 
+     1-1. cmd를 이용해 웹사이트를 만들 가상환경 생성 
             --> python -m venve myenironment<가상환경 이름>
   
-  1-2. myenvironment 파일 하위에 있는 Scripts로 이동
+     1-2. myenvironment 파일 하위에 있는 Scripts로 이동
             --> C:\python-kdy\django\myenvironment\Scipts
             --> 가상환경 실행 --> activate.bat
             
-  1-3. 서버를 구동할 프로젝트 생성
+     1-3. 서버를 구동할 프로젝트 생성
             --> myenvironment 가상환경 내에서 C:\python_kdy\django 파일로 이동 후
             --> django-admin startproject myproject 명령 시행 ( myproject라는 프로젝트 생성)
             
-  1-4. 서버 구동
+     1-4. 서버 구동
             --> C:\python_kdy\django\myproject --> manage.py 파일 있는 곳에서 실행
             --> python manage.py runserver ( 기본 8000번 포트로 서버 구동)
             --> (원하는 포트번호로 바꿀시) python manage.py runserver <포트번호> 
             
-  1-5. 서버 종료
+     1-5. 서버 종료
             --> CTRL + C
             
-  1-6. 서버 구동 확인
+     1-6. 서버 구동 확인
             --> 인터넷 사이에서 주소창에 127.0.0.1:8000 입력
             
             
@@ -94,16 +94,16 @@
 -------------------------------------------------------------------------------
 
 4. App 생성하기
-    4-1. Project vs App 차이
+     4-1. Project vs App 차이
               --> project 는 큰 개념이고 app은 그 하위의 작은개념.
               --> 큰 프로젝트 안에서 필요한 프로그램들의 단위가 앱으로써 회원가입, 게시판, 설문조사 등의 앱이 있을 수 있음.
               --> 즉, 앱을 프로젝트 내에서 특정한 기능을 수행하는 프로그램 단위.
               
-    4-2. 앱 생성 명령어
+     4-2. 앱 생성 명령어
               --> 가상모드로 진입
               --> C:\python_kdy\django\myproject > py manage.py startapp onememos
     
-    4-3. onememos 폴더 생성 및 파일들
+     4-3. onememos 폴더 생성 및 파일들
               --> migrations(폴더)
               --> admin.py
               --> views.py
@@ -111,24 +111,24 @@
                     등등.. 폴더나 파일들이 자동으로 생성
               --> urls.py (별도로 수동 생성해줘야 하는 파일. 최상위 URLconf 와의 연결을 위하여 필요. 최상위 urls.py 파일에 있음)
                     --> copy con urls.py      
-    4-4. 최상위 urls.py --> ulpatterns --> 앱패스 추가
+     4-4. 최상위 urls.py --> ulpatterns --> 앱패스 추가
               --> path('onememos/', include('onememos.urls')),  # include 임포트 했는지 확인!!! 안하면 서버 구동 시 에러!!! 
               --> path('admin/', admin.site.urls),
                            
-    4-5. include()함수
+     4-5. include()함수
               --> 다른 URLconf 패스들을 참조할 수 있도록 해주는 함수. 앱 구동 및 연결 시 중요한 역할을 하는 함수.
               
 -----------------------------------------------------------------------------------
 
 5. hellow World 출력 ( 텍스트 에디터 이용)
-    5-1. views.py파일 실행
+     5-1. views.py파일 실행
              --> from django.shortcuts import render
                  from django.http import HttpResponse
 
                  def index(request):
                  return HttpResponse('Hello World!!')
                  
-    5-2. urls.py 
+     5-2. urls.py 
              --> from django.urls import path
                  from . import views
                  
@@ -137,7 +137,7 @@
                  ]                                                           주소창에 localhost:8000/onememos/ 로 입력한 거랑 똑같다.
                                                                # views.index --> views파일 안에있는 index 모듈을 참고하겠다.
     
-    5-3. 프로젝트 파일의 urls.py
+     5-3. 프로젝트 파일의 urls.py
             --> myproject의 urls.py을 연다.
             --> from django.contrib import admin
                 from django.urls import path, include
@@ -205,10 +205,99 @@
       
 ------------------------------------------------------------------------
 
+7. onememos의 views.py에서 함수를 만들어줄때 def **(request): 에서 request란 뭘까?
+      1. 하나의 폼에서 정보를 입력하고 서버의 특정주소로 send해준다.
+      2. 보내는 방식이 2가지 방식으로 보낸다.
+          2-1. POST , GET, COOKIE 방식
+      3. 폼에서 위의 2가지 방식 중 하나의 방식을 통해 요청하면
+         onememos의 urls.py 에서는 views.함수와 서버를 request객체를 통해서 연결시켜준다.
+         
+      * 즉, request객체는 사용자가 폼 페이지를 통해서 입력한 폼 데이터 값들을 받는다.
 
-                           
-                           
-                           
+      7-1. request.GET 이용하기 (GET 방식)
+            --> onememos의 views.py 에서 
+            -->def createMemo(request):
+                  memoContent = request.GET['memoContent']    # 사용자가 ?memoContent= 로 입력한 정보를 출력한다.
+                  return HttpResponse('Create Memo =' + memoContent)
+            --> 웹 주소창에 localhost:8000/onememos/createMemo/?memoContent=대한민국 입력
+                                       
+---------------------------------------------------------------------------------
+
+8. render 함수
+       * 우리가 만든 Template파일(~.html 파일)을 return 해줌.
+       * render함수와 template파일의 관계
+            -> 웹사이트 개발 시 파이썬 코드와 데이터를 템플릿 파일로 만들어주는 함수. (쉽게 말해 HTML로 변환해서 적용해주는 함수)
+            -> 결국 리턴은 HTML 파일로 리턴.
+            -> 이렇게 HTML 파일로 리턴한 것을 --> 템플릿(Template) 또는 템플릿 파일
+            -> 그러나 템플릿 파일이 HTML 파일은 아니다.
+            -> 이러한 템플릿 파일은 장고 프레임원크 전용 파일의 개념.
+
+       * 템플릿 폴더 만들기
+            - 첫번째 : 프로젝트 루트 폴더에 templates 폴더를 만들어서 사용 --> settings.py -->  템플릿 경로 추가하여 사용.
+            - 두번쨰 : 생성한 앱(App)쪽 바로 하위에다가 --> templates 폴더를 만들어서 사용 --> 앱별로 템플릿 사용이 가능.
+            - 정리하면, 장고는 템플릿 폴더를 인식하는 방식이 여러 가지 이다.
+            - 즉, onememos 앱의 경우 하위에 templates폴더 생성하면 별다른 설정없이 바로 템플릿 디렉토리로 인식.
+            - 서버 재시작 해주어야 된다. ( py manage.py runserver)
+            
+-----------------------------------------------------------------------------------
+
+9. template 폴더 만들기
+      9-1. onememos폴더에서 templates 폴더 만들기 
+      9-2. templates폴더에 들어가서 main.html 만들기
+      9-3. 텍스트 에디터에서 만들어놓은 main.html 파일 열기 
+            --> onememos 메인페이지 템플릿    입력
+      9-4. onememos의 views.py 에서
+            --> def main(request):
+                   return render(request, 'main.html')   # 이미 urls.py 에서 path를 통해 onememos/ 가 요청이 되었기 때문에 그냥 main.html 만 적어도 된다.
+      9-5.  서버 재시작 후 웹주소창에 localhost:8000/onememos 입력   
+            
+------------------------------------------------------------------------------------
+
+10. 내가만든 웹의 관리자 페이지에서 위에서 만든 Memos에 있는 Memo의 제목들이 입력한 걸로 나오게 하는 방법
+      10-1. onememos폴더의 models.py 에서
+            --> class Memo(models.Model):
+                  memo_text = models.CharField(max_length = 200) # 최대 글자 200자로 설정
+                  published_date = models.DateTimeField(auto_now_add = True) # 자동으로 날짜가 설정
+    
+                  def __str__(self):
+                       return self.memo_text
+                       
+--------------------------------------------------------------------------------------
+
+11. 뷰페이지 템플릿 만들기(1) - CMD 명령 프롬프트에서 DB 조작
+      11-1. https://www.sqlite.org/download.html 여기서 관련 툴인 sqlite-tools-win32-x86- zip 다운로드
+      11-2. 압축을 푼후 sqlite3.exe 실행파일을 db.sqlite3 가 있는 폴더안에 복붙한다.
+            --> 이렇게 안하면 cmd 에 py manage.py dbshell 을 치면 오류가 난다.
+      
+      11-3. 위의 다 한후 cmd로 돌아와서 sqlite3의 DB 실행
+            --> py manage.py dbshell
+      11-4. 여기서 .table을 쳐보면 현재 있는 테이블의 이름들을 확인할 수 있다.
+            --> 위에서 만든 Memo테이블은 사실 이름이 onememos_memo 로 되어있는걸 확인할 수 있다!! 주의하자
+      11-5. onememos_memo 테이블 실행
+            --> select * from onememos_memo;  
+      11-6. Memo 에 적어놓은 글 바꾸기
+            --> UPDATE onememos_memo SET memo_text = '환영합니다. 대한민국~' WHERE id = 1;
+            
+------------------------------------------------------------------------------------------
+
+12. 뷰페이지 템플릿 만들기(2) - Form 작성 및 DB 입력과 출력1
+      12-1. Form은 POST방식이기에 views.py 에서 POST로 객체를 불러오자
+            --> def createMemo(request):
+                    memoContent = request.POST['memoContent']
+    
+                    return HttpResponse('Create Memo =' + memoContent)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
                            
                            
                            
